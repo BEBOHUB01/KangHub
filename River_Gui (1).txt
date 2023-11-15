@@ -1021,8 +1021,6 @@ end
 
 local Library = Update:Window("KangHub ","",Enum.KeyCode.RightControl);
 Main = Library:Tab("Main")
-Eps = Library:Tab("Esp")
-Misc = Library:Tab("Misc")
 S = Library:Tab("Settings")
 
 Main:Line()
@@ -1055,60 +1053,6 @@ end)
 Main:Toggle("AutoFarm",false,function(value)
 	_G.Auto_Farm = value
 end)
-
-Main:Seperator("Eps")
-
-Esp:Toggle("ESP Player",false,function(a)
-        ESPPlayer = a
-	UpdatePlayerChams()
-    end)
-    
-    Esp:Toggle("ESP Chest",false,function(a)
-        ChestESP = a
-	UpdateChestChams() 
-    end)
-    
-    Esp:Toggle("ESP Fruit",false,function(a)
-        DevilFruitESP = a
-        while DevilFruitESP do wait()
-            UpdateDevilChams() 
-        end
-    end)
-    
-    Esp:Toggle("ESP Real Fruit",RealFruitESP,function(a)
-        RealFruitESP = a
-	UpdateRealFruitChams() 
-    end)
-    
-    Esp:Toggle("ESP Flower",false,function(a)
-        FlowerESP = a
-	UpdateFlowerChams() 
-    end)
-    spawn(function()
-	    while wait(2) do
-		    if FlowerESP then
-			    UpdateFlowerChams() 
-		    end
-		    if DevilFruitESP then
-			    UpdateDevilChams() 
-		    end
-		    if ChestESP then
-			    UpdateChestChams() 
-		    end
-		    if ESPPlayer then
-			    UpdatePlayerChams()
-		    end
-		    if RealFruitESP then
-			    UpdateRealFruitChams()
-		    end
-	    end
-    end)
-Esp:Toggle("ESP Island",IslandESP,function(value)
-        IslandESP = value
-        while IslandESP do wait()
-            UpdateIslandESP() 
-        end
-    end)
 
 Main:Line()
 
