@@ -1412,22 +1412,7 @@ end)
 
 
     
-game.StarterGui:SetCore("SendNotification", {
-      Icon = "http://www.roblox.com/asset/?id=12523036534";
-      Title = "KangHub", 
-      Text = "Welcome To Script!!"
-  })
 
-game.StarterGui:SetCore("SendNotification", {
-      Icon = "http://www.roblox.com/asset/?id=12523036534";
-      Title = "KangHub", 
-      Text = "made by 
-Sai"
-  })
-  
-  require(game:GetService("ReplicatedStorage").Notification).new("Script By Sai "):Display();
-  wait()
-  setthreadcontext(5)
     
 
 
