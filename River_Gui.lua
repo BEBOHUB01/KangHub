@@ -1,5 +1,5 @@
 do local GUI = game.CoreGui:FindFirstChild("SOMEXHUB");if GUI then GUI:Destroy();end;if _G.Color == nil then
-       _G.Color = Color3.fromRGB(255,255,255)
+       _G.Color = Color3.fromRGB(165, 42, 42)
    end 
 end
 
@@ -1019,49 +1019,270 @@ function Update:Window(text,logo,keybind)
 	return uitab
 end
 
-local Library = Update:Window("xNero","",Enum.KeyCode.RightControl);
+local Library = Update:Window("KangHub","",Enum.KeyCode.RightControl);
 Main = Library:Tab("Main")
+S = Library:Tab("Settings")
 
 Main:Line()
 
-Main:Label("Welcome xNero Community")
+Main:Label("Welcome KangHub Community")
 
 local Time = Main:Label("Executor Time");spawn(function() getgenv().Time = true;while true do wait(.1) UpdateTime() end end);function UpdateTime() local date = os.date("*t");local hour = (date.hour) % 24;local ampm = hour < 12 and "AM" or "PM";local timezone = string.format("%02i:%02i:%02i %s", ((hour -1) % 12) + 1, date.min, date.sec, ampm);local datetime = string.format("%02d/%02d/%04d", date.day, date.month, date.year);local LocalizationService = game:GetService("LocalizationService");local Players = game:GetService("Players");local player = Players.LocalPlayer;local name = player.Name;local result, code = pcall(function()   return LocalizationService:GetCountryRegionForPlayerAsync(player)  end);Time:Set(" : " .. timezone);Time:Set("Executor Time: " .. datetime .. " [ " .. code .. " ]");spawn(function() if getgenv().Time then pcall(function()  while wait() do  Time()  end end) end end) end
 
-Main:Seperator("Seperator")
+Main:Seperator("-------------Mobile KangHub-------------")
+Main:Seperator("---Farm---")
 
-Main:Button("Button",function()
-	print("Button")
+WeaponList = {}
+    
+    for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do  
+        if v:IsA("Tool") then
+            table.insert(WeaponList ,v.Name)
+        end
+    end
+    
+local SearchWeapon = Main:Dropdown("Select Weapon",WeaponList,function(value)
+	_G.SelectWeapon = value
 end)
-
-Main:Toggle("Toggle",false,function(value)
-	print(value)
-end)
-
-local Weapon = {
- "1",
- "2",
- "3"
-}
-
-local SearchWeapon = Main:Dropdown("Dropdown",Weapon,function(value)
-	print(value)
-end)
-
-Main:Button("Refresh Weapon",function()
-	SearchWeapon:Clear()
-	SearchWeapon:Add(Weapon)
+    
+Main:Button("Reset Weapon",function()
+	SelectWeapona:Clear()
+        for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do  
+            SelectWeapona:Add(v.Name)
+        end
+end) 
+    
+Main:Toggle("AutoFarm",false,function(value)
+	_G.Auto_Farm = value
 end)
 
 Main:Line()
 
-Main:Slider("Slider",1,100,10,function(value)
-	print(value)
+S:Toggle("SuperFastMode [ Still can't use it ]",true,function(value)
+        print("SuperFastMode Still can't use it from Ai KangHub")
+    end)
+
+S:Toggle("ClickAttack [ Fast Op ]",false,function(value)
+        ClickAttack = value
+    end)
+
+S:Toggle("AutoHaki",true,function(value)
+	_G.AUTOHAKI = value
 end)
 
-Main:Textbox("Textbox",true,function(value)
-    print(value)
+S:Toggle("White Screen",_G.WhiteScreen,function(value)
+	_G.WhiteScreen = value
+if _G.WhiteScreen == true then
+    game:GetService("RunService"):Set3dRenderingEnabled(false)
+elseif _G.WhiteScreen == false then
+    game:GetService("RunService"):Set3dRenderingEnabled(true)
+end
 end)
 
-local Home = Library:Tab("Main2")
+   
+S:Toggle("SetPoint",true,function(value)
+	_G.Set = value
+end)
 
+spawn(function()
+   while wait() do
+      if _G.Set then
+         pcall(function()
+         local args = {
+         [1] = "SetSpawnPoint"
+         }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+      end)
+    end
+  end
+end)
+
+function totarget(p)
+    local Distance2 = (p.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+    local tween_s = game:service"TweenService"
+    local info = TweenInfo.new(Distance2/350, Enum.EasingStyle.Linear)
+    local tween = tween_s:Create(game:GetService("Players").LocalPlayer.Character["HumanoidRootPart"], info, {CFrame = p})
+    tween:Play()
+    if Distance2 <= 75 then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p
+    end
+end
+
+function checklevel()
+    local lv = game:GetService("Players").LocalPlayer.Data.Level.Value
+    if lv == 1 or lv <= 9 then
+        Mon = "Bandit"
+        Title = "Bandit"
+        QuestName = "BanditQuest1"
+        QuestNumber = 1
+        CFrameQuest = CFrame.new(1061.15271, 16.7367725, 1548.93018, -0.836085379, -3.89774577e-08, 0.548599303, -1.17575967e-08, 1, 5.31300408e-08, -0.548599303, 3.79710414e-08, -0.836085379)
+        CFrameMon = CFrame.new(1151.11829, 16.7761021, 1599.73499, -0.999999762, 0, -0.000701809535, 0, 1, 0, 0.000701809535, 0, -0.999999762)
+        CFramePuk = CFrame.new(1101.75903, 67.6758957, 1617.50391, -0.399259984, -5.24373327e-08, -0.916837752, -1.74068084e-08, 1, -4.96134582e-08, 0.916837752, -3.84945009e-09, -0.399259984)
+    elseif lv == 10 or lv <= 14 then
+        Mon = "Monkey"
+        Title = "Monkey"
+        QuestName = "JungleQuest"
+        QuestNumber = 1
+        CFrameQuest = CFrame.new(-1599.23096, 37.8653831, 153.335953, -0.0493941903, 1.29583286e-08, 0.998779356, 3.21716165e-08, 1, -1.13831318e-08, -0.998779356, 3.15700852e-08, -0.0493941903)
+        CFrameMon = CFrame.new(-1479.76099, 23.195364, 106.327942, 0.96289885, 5.22265786e-10, -0.269862473, 6.59528099e-10, 1, 4.28857172e-09, 0.269862473, -4.30744285e-09, 0.96289885)
+        CFramePuk = CFrame.new(-1776.32959, 61.1782455, 66.8902054, -0.912609756, -2.38546143e-08, 0.408831745, -2.14773621e-08, 1, 1.04056577e-08, -0.408831745, 7.15677129e-10, -0.912609756)
+     elseif lv == 15 or lv <= 29 then
+        Mon = "Gorilla"
+        Title = "Gorilla"
+        QuestName = "JungleQuest"
+        QuestNumber = 2
+        CFrameQuest = CFrame.new(-1599.23096, 37.8653831, 153.335953, -0.0493941903, 1.29583286e-08, 0.998779356, 3.21716165e-08, 1, -1.13831318e-08, -0.998779356, 3.15700852e-08, -0.0493941903)
+        CFrameMon = CFrame.new(-1242.46655, 6.62262297, -523.166382, -0.974416733, 9.23166681e-08, -0.224748924, 9.58993027e-08, 1, -5.02435071e-09, 0.224748924, -2.64490758e-08, -0.974416733)
+        CFramePuk = CFrame.new(-1133.4574, 40.8067436, -526.086792, 0.647179008, -2.76535794e-10, 0.762338042, 3.26674865e-08, 1, -2.73699801e-08, -0.762338042, 4.26169464e-08, 0.647179008)
+     elseif lv == 30 or lv <= 39 then
+        Mon = "Pirate"
+        Title = "Pirate"
+        QuestName = "BuggyQuest1"
+        QuestNumber = 1
+        CFrameQuest = CFrame.new(-1141.07483, 4.10001802, 3831.5498, 0.965929627, -0, -0.258804798, 0, 1, -0, 0.258804798, 0, 0.965929627)
+        CFrameMon = CFrame.new(-1103.513427734375, 13.752052307128906, 3896.091064453125)
+        CFramePuk = CFrame.new(-1229.19397, 8.44740963, 3970.59692, -0.965929985, 0.0818140209, 0.24553147, -3.91080976e-05, 0.948671699, -0.316262603, -0.258803457, -0.30549711, -0.916347146)
+     elseif lv == 40 or lv <= 59 then
+        Mon = "Brute"
+        Title = "Brute"
+        QuestName = "BuggyQuest1"
+        QuestNumber = 2
+        CFrameQuest = CFrame.new(-1141.07483, 4.10001802, 3831.5498, 0.965929627, -0, -0.258804798, 0, 1, -0, 0.258804798, 0, 0.965929627)
+        CFrameMon = CFrame.new(-1140.083740234375, 14.809885025024414, 4322.92138671875)
+        CFramePuk = CFrame.new(-1421.39734, 12.5467596, 4251.2583, -0.121162415, 0.0686408281, 0.990256608, 0.0203943197, 0.997567832, -0.0666522756, -0.992423236, 0.0121198595, -0.122267604)
+      elseif lv == 60 or lv <= 74 then
+        Mon = "Desert Bandit"
+        Title = "Desert Bandit"
+        QuestName = "DesertQuest"
+        QuestNumber = 1
+        CFrameQuest = CFrame.new(894.488647, 5.14000702, 4392.43359, 0.819155693, -0, -0.573571265, 0, 1, -0, 0.573571265, 0, 0.819155693)
+        CFrameMon = CFrame.new(924.7998046875, 6.44867467880249, 4481.5859375)
+        CFramePuk = CFrame.new(-1133.4574, 40.8067436, -526.086792, 0.647179008, -2.76535794e-10, 0.762338042, 3.26674865e-08, 1, -2.73699801e-08, -0.762338042, 4.26169464e-08, 0.647179008)
+    end
+end
+
+spawn(function()
+    while task.wait(.1) do
+        pcall(function()
+            if _G.Auto_Farm then
+            checklevel()
+                if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
+totarget(CFrameQuest)
+wait(.3)
+local args = {
+    [1] = "StartQuest",
+    [2] = QuestName,
+    [3] = QuestNumber
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+elseif game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+    for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+        for i,v2 in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+        if v.Name == Mon and v2.Name == Mon then
+            totarget(v.HumanoidRootPart.CFrame * CFrame.new(0,1,15))
+            v.HumanoidRootPart.Size = Vector3.new(60,2.5,60)
+            v.HumanoidRootPart.CFrame = CFrameMon
+            game:GetService'VirtualUser':CaptureController()
+            game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+            v2.HumanoidRootPart.CanCollide = false
+            sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+        end
+        end
+    end
+                end
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(.1) do
+        pcall(function()
+            if _G.Auto_Farm then
+            checklevel()
+    if not string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, Title) then
+local args = {
+    [1] = "AbandonQuest"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+    end
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(.1) do
+        pcall(function()
+            if _G.Auto_Farm then
+            checklevel()
+            if not game:GetService("Workspace").Enemies:FindFirstChild(Mon) then
+                totarget(CFramePuk)
+            end
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(.1) do
+        pcall(function()
+            if _G.Auto_Farm then
+            checklevel()
+            for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+        if v.Name == Mon then
+            if v.Humanoid.Health == 0 then
+            v:Destroy()
+            end
+            end
+            end
+            end
+        end)
+    end
+end)
+
+
+
+spawn(function()
+    while wait(.1) do
+        if _G.AUTOHAKI then 
+            if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
+                local args = {
+                    [1] = "Buso"
+                }
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end
+        end
+    end
+end)
+
+function Equip(ToolX)
+    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(ToolX) then
+        getgenv().Tol = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(ToolX)
+        game.Players.LocalPlayer.Character.Humanoid:EquipTool(Tol)
+    end
+end
+
+spawn(function()
+      while wait() do
+      if _G.WhiteScreen then
+        for i, v in pairs(game.Workspace["_WorldOrigin"]:GetChildren()) do
+            if v.Name == "CurvedRing" or v.Name == "SlashHit" or v.Name == "DamageCounter" or v.Name == "SwordSlash" or v.Name == "SlashTail" or v.Name == "Sounds" then
+                v:Destroy() 
+            end
+        end
+    end
+    end
+end) 
+
+spawn(function()
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if getgenv().Config['ClickAttack'] then
+             pcall(function()
+                game:GetService'VirtualUser':CaptureController()
+			    game:GetService'VirtualUser':Button1Down(Vector2.new(0,1,0,1))
+            end)
+        end
+    end)
+end)
